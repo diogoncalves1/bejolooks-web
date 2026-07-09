@@ -1,11 +1,21 @@
-export default function HomePage() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gray-100 px-6">
-      <h1 className="mb-4 text-5xl font-bold text-gray-900">BejoLooks</h1>
+import Navbar from "@/components/navbar";
+import Hero from "@/components/hero";
+import Features from "@/components/features";
+import OutfitShowcase from "@/components/outfit-showcase";
+import CtaSection from "@/components/cta-section";
+import Footer from "@/components/footer";
 
-      <p className="rounded-lg bg-yellow-400 px-6 py-3 text-lg font-medium text-black shadow-md">
-        🚧 Em construção 🚧
-      </p>
-    </main>
+export default function Page() {
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Navbar />
+      <main>
+        <Hero />
+        <Features />
+        <OutfitShowcase />
+        <CtaSection />
+      </main>
+      <Footer />
+    </div>
   );
 }
