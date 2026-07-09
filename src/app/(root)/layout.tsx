@@ -1,7 +1,13 @@
+import { AuthGuard } from "@/shared/auth/auth-guard";
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <section>{children}</section>;
+  return (
+    <AuthGuard>
+      <section>{children}</section>
+    </AuthGuard>
+  );
 }
