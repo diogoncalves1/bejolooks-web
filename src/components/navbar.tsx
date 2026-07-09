@@ -1,26 +1,29 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { useState } from 'react'
-import { Menu, X, Zap } from 'lucide-react'
+import Link from "next/link";
+import { useState } from "react";
+import { Menu, X, Zap } from "lucide-react";
 
 const navLinks = [
-  { label: 'Explore', href: '/explore' },
-  { label: 'Features', href: '/features' },
-  { label: 'Closet', href: '/closet' },
-  { label: 'Outfits', href: '/outfits' },
-]
+  { label: "Explore", href: "/explore" },
+  { label: "Features", href: "/features" },
+  { label: "Closet", href: "/closet" },
+  { label: "Outfits", href: "/outfits" },
+];
 
 export default function Navbar() {
-  const [mobileOpen, setMobileOpen] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-md border-b border-border">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3.5">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent">
-            <Zap className="h-5 w-5 text-accent-foreground fill-primary" aria-hidden="true" />
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary">
+            <Zap
+              className="h-5 w-5 text-foreground fill-foreground"
+              aria-hidden="true"
+            />
           </span>
           <span className="font-serif text-xl font-bold tracking-tight text-foreground">
             bejo<span className="text-primary">looks</span>
@@ -28,7 +31,10 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Main navigation">
+        <nav
+          className="hidden items-center gap-1 md:flex"
+          aria-label="Main navigation"
+        >
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -50,7 +56,7 @@ export default function Navbar() {
           </Link>
           <Link
             href="/register"
-            className="rounded-full bg-accent px-5 py-2 text-sm font-bold text-accent-foreground transition-all hover:scale-105 active:scale-95"
+            className="rounded-full bg-primary px-5 py-2 text-sm font-bold text-foreground transition-all hover:scale-105 active:scale-95"
           >
             Sign Up Free
           </Link>
@@ -60,10 +66,14 @@ export default function Navbar() {
         <button
           className="flex items-center justify-center rounded-xl p-2 text-foreground md:hidden transition-colors hover:bg-secondary"
           onClick={() => setMobileOpen((v) => !v)}
-          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileOpen}
         >
-          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          {mobileOpen ? (
+            <X className="h-5 w-5" />
+          ) : (
+            <Menu className="h-5 w-5" />
+          )}
         </button>
       </div>
 
@@ -96,7 +106,7 @@ export default function Navbar() {
             </Link>
             <Link
               href="/register"
-              className="rounded-full bg-accent px-5 py-3 text-center text-sm font-bold text-accent-foreground"
+              className="rounded-full bg-primary px-5 py-3 text-center text-sm font-bold text-foreground"
               onClick={() => setMobileOpen(false)}
             >
               Sign Up Free
@@ -105,5 +115,5 @@ export default function Navbar() {
         </nav>
       )}
     </header>
-  )
+  );
 }
