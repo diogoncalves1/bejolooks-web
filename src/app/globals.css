@@ -25,6 +25,8 @@
   --color-input: var(--input);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
+  --color-dark-foreground: var(--dark-foreground);
+  --color-dark: var(--dark);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -51,7 +53,11 @@
 :root {
   color-scheme: light;
 
-  /* BejoLooks sporty brand palette */
+  /* BejoLooks — 3-colour brand palette
+     #FBF1EC  warm beige   (background)
+     #FD9323  vivid orange (primary / brand)
+     #0f0f0f  near-black   (dark surfaces)
+  */
   --background: #fbf1ec;
   --foreground: #0f0f0f;
   --card: #ffffff;
@@ -63,9 +69,13 @@
   --secondary: #f0e3d8;
   --secondary-foreground: #0f0f0f;
   --muted: #f0e3d8;
-  --muted-foreground: #6b5744;
-  --accent: #0f0f0f;
-  --accent-foreground: #fbf1ec;
+  --muted-foreground: #7a5c44;
+  /* accent = orange (used for pills, highlights, interactive accents) */
+  --accent: #fd9323;
+  --accent-foreground: #0f0f0f;
+  /* dark surface token — used as bg for dark sections */
+  --dark: #0f0f0f;
+  --dark-foreground: #fbf1ec;
   --destructive: oklch(0.577 0.245 27.325);
   --border: #e4d4c6;
   --input: #e4d4c6;
@@ -73,7 +83,7 @@
   --chart-1: #fd9323;
   --chart-2: #f0b060;
   --chart-3: #e4d4c6;
-  --chart-4: #6b5744;
+  --chart-4: #7a5c44;
   --chart-5: #0f0f0f;
   --radius: 1rem;
   --sidebar: #ffffff;
