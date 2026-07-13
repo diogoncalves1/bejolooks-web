@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/shared/auth/auth-context";
+import type { User } from "@/shared/auth/auth-context";
+import type { ApiEnvelope } from "@/shared/api/envelope";
 import { AuthCard } from "@/shared/components/auth/AuthCard";
 import { PasswordInput } from "@/shared/components/auth/PasswordInput";
 import { PasswordStrengthMeter } from "@/shared/components/auth/PasswordStrengthMeter";
@@ -36,7 +38,7 @@ export default function RegisterPage() {
     setSubmitting(true);
 
     try {
-      // NOTA (contrato assumido): POST /auth/register -> { accessToken, refreshToken?, user }
+      // NOTA (contrato assumido): POST /auth/register -> { success, message, errors, data: { token?, refreshToken?, user } }
       // Se o teu backend não fizer login automático após o registo, troca
       // este bloco por: registar -> redirecionar para /login com mensagem de sucesso.
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, {
@@ -48,15 +50,19 @@ export default function RegisterPage() {
         body: JSON.stringify({ name, email, password }),
       });
 
-      const data = await res.json();
+      const body: ApiEnvelope<{
+        token?: string;
+        refreshToken?: string;
+        user: User;
+      }> = await res.json();
 
-      if (!res.ok) {
-        throw new Error(data.message || "Erro ao criar a conta.");
+      if (!res.ok || !body.success) {
+        throw new Error(body.message || "Erro ao criar a conta.");
       }
 
-      if (data.accessToken) {
+      if (body.data?.token) {
         // Backend faz login automático após registo
-        login(data.accessToken, data.user, data.refreshToken);
+        login(body.data.token, body.data.user, body.data.refreshToken);
         router.push("/");
       } else {
         // Backend só cria a conta; utilizador tem de fazer login manualmente

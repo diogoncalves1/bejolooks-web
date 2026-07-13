@@ -1,4 +1,5 @@
 import { getRefreshToken, removeTokens, saveTokens } from "./token";
+import type { ApiEnvelope } from "@/shared/api/envelope";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -7,12 +8,8 @@ let refreshPromise: Promise<string | null> | null = null;
 /**
  * Troca o refresh token por um novo access token.
  *
- * NOTA (contrato assumido com o backend): POST {API_URL}/auth/refresh
- * com body { refreshToken } -> { accessToken, refreshToken? }
- * Ajusta o endpoint/payload ao contrato real da tua API.
- *
- * Faz "dedupe": se houver vários pedidos em simultâneo a apanhar um 401,
- * só é feito um único pedido de refresh, e todos esperam pelo mesmo resultado.
+ * Contrato: POST {API_URL}/auth/refresh com body { refreshToken } ->
+ * { success, message, errors, data: { token, refreshToken? } }
  */
 export async function refreshAccessToken(): Promise<string | null> {
   if (refreshPromise) return refreshPromise;
@@ -33,14 +30,16 @@ export async function refreshAccessToken(): Promise<string | null> {
         return null;
       }
 
-      const data = await res.json();
-      if (!data.accessToken) {
+      const body: ApiEnvelope<{ token: string; refreshToken?: string }> =
+        await res.json();
+
+      if (!body.success || !body.data?.token) {
         removeTokens();
         return null;
       }
 
-      saveTokens(data.accessToken, data.refreshToken);
-      return data.accessToken as string;
+      saveTokens(body.data.token, body.data.refreshToken);
+      return body.data.token;
     } catch {
       return null;
     }

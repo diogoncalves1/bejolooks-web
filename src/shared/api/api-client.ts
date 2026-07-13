@@ -55,7 +55,22 @@ export async function apiFetch<T = unknown>(
 
   // Alguns endpoints (ex: DELETE) podem não devolver corpo
   const text = await res.text();
-  return (text ? JSON.parse(text) : undefined) as T;
+  if (!text) return undefined as T;
+
+  const parsed = JSON.parse(text);
+
+  // O backend embrulha as respostas em { success, message, errors, data }.
+  // Desembrulhamos automaticamente para os chamadores não terem de o fazer.
+  if (
+    parsed &&
+    typeof parsed === "object" &&
+    "success" in parsed &&
+    "data" in parsed
+  ) {
+    return parsed.data as T;
+  }
+
+  return parsed as T;
 }
 
 export class ApiError extends Error {
