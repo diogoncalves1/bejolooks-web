@@ -1,6 +1,7 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Space_Grotesk } from "next/font/google";
+import { AuthProvider } from "@/shared/auth/auth-context";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -53,8 +54,10 @@ export default function RootLayout({
       className={`${dmSans.variable} ${spaceGrotesk.variable} light bg-background`}
     >
       <body className="antialiased font-sans">
-        {children}
-        {process.env.NODE_ENV === "production" && <Analytics />}
+        <AuthProvider>
+          {children}
+          {process.env.NODE_ENV === "production" && <Analytics />}
+        </AuthProvider>
       </body>
     </html>
   );

@@ -11,13 +11,11 @@
 
 export type OAuthProvider = "google" | "apple";
 
-export function getOAuthUrl(provider: OAuthProvider): string {
+export function getOAuthUrl(provider: OAuthProvider, origin = ""): string {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
-  const redirectTo =
-    typeof window !== "undefined" ? window.location.origin : "";
 
   const params = new URLSearchParams({
-    redirect_uri: `${redirectTo}/oauth/callback`,
+    redirect_uri: `${origin}/oauth/callback`,
   });
 
   return `${API_URL}/auth/${provider}?${params.toString()}`;

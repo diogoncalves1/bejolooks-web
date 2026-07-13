@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/shared/auth/auth-context";
+import type { User } from "@/shared/auth/auth-context";
+import type { ApiEnvelope } from "@/shared/api/envelope";
 import { AuthCard } from "@/shared/components/auth/AuthCard";
 import { PasswordInput } from "@/shared/components/auth/PasswordInput";
 import { OAuthButtons } from "@/shared/components/auth/OAuthButtons";
@@ -38,18 +40,22 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password, rememberMe }),
       });
 
-      const data = await res.json();
+      const body: ApiEnvelope<{
+        token: string;
+        refreshToken?: string;
+        user: User;
+      }> = await res.json();
 
-      if (!res.ok) {
-        throw new Error(data.message || "Erro no login");
+      if (!res.ok || !body.success) {
+        throw new Error(body.message || "Erro no login");
       }
 
-      if (!data.accessToken) {
-        throw new Error("Resposta inválida do servidor (sem accessToken).");
+      if (!body.data?.token) {
+        throw new Error("Resposta inválida do servidor (sem token).");
       }
 
       // Guarda os tokens e atualiza o estado global de autenticação
-      login(data.accessToken, data.user, data.refreshToken);
+      login(body.data.token, body.data.user, body.data.refreshToken);
 
       router.push("/");
     } catch (err) {
