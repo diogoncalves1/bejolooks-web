@@ -50,7 +50,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSans.variable} ${spaceGrotesk.variable} bg-background`}
+      className={`${dmSans.variable} ${spaceGrotesk.variable} light bg-background`}
     >
       <body className="antialiased font-sans">
         {children}
